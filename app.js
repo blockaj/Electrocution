@@ -1,11 +1,13 @@
-var express = require("express");
+var express = require('express');
 var app = express();
-var mongoose = require("mongoose");
-var bcrypt = require("bcrypt");
-var passport = require("passport");
-var LocalStrategy = require("passport-local").Strategy;
+var mongoose = require('mongoose');
+var bcrypt = require('bcrypt');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
 var User = require('./models/user');
 var Message = require('./models/message');
+var nunjucks = require('nunjucks');
+var USERNAME;
 
 //Connect to a specific db
 mongoose.connect('mongodb://localhost/SpecialChat');
@@ -27,6 +29,11 @@ app.use(session({secret: 'dont tell nobody my secret',
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+nunjucks.configure('views', {
+    autoescape: true,
+    express: app
+});
 
 //Passport setup
 passport.serializeUser(function(user, done){
@@ -56,23 +63,26 @@ passport.use(new LocalStrategy(
 ));
 
 
-
-
-
-
 app.get('/', function(req, res){
-    res.sendfile('./views/index.html');
+    res.render('index.html');
 });
 
 app.get('/chat', function(req, res){
-    res.sendfile('./views/chat.html');
+    console.log(USERNAME);
+    res.render('chat.html', {
+        username: USERNAME
+    });
 });
 
 app.post('/attempt_login',
     passport.authenticate('local', {successRedirect: '/chat',
-                                    failureRedirect: '/'
-                                })
+                                    failureRedirect: '/' }),
+                                    function(req, res){
+        USERNAME = req.body.username;
+        console.log(req.body.username);
+    }
 );
+
 var io = require("socket.io").listen(app.listen(3000));
 
 io.on('connection', function(socket){
