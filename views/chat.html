@@ -1,11 +1,15 @@
 <html>
     <head>
         <title>Chat</title>
+        <link rel='stylesheet' href='chat.css'/>
+        <link rel='stylesheet' href='reset.css' />
+        <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
+        <script src='client-chat-controller.js'></script>
     </head>
     <body>
         <div class='chat-view'>
 
         </div>
-        <input type='text' class='chat-box'>
+        <input type='text' class='chat-box' onkeydown='checkKeyCode()'>
     </body>
 </html>
