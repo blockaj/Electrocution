@@ -1,14 +1,40 @@
 var socket = io.connect('http://localhost:3000');
-var username =
+var username;
+socket.on('undist', function(un){
+    username = un.username;
+});
+
+socket.on('broadcast', function(message){
+    console.log(message.username + ': ' + message.message);
+    addMessageToView(message.username, message.message);
+    var chatView = document.getElementById('chat-view');
+    chatView.scrollTop = chatView.scrollHeight;
+});
 function sendMessage() {
-    if ($('.text-box').val() != '') {
-        socket.emit('userMessage', {'message': $('text-box').val, 'username': username});
+    var messageContent = $('.chat-box').val();
+    if (messageContent == 'server: settings') {
+        $.post('/go-to-server-settings', function(handler){
+
+        });
     }
+    else{
+        if ($('.chat-box').val() != '') {
+            socket.emit('userMessage', {'message': messageContent, 'username': username});
+        }
+        $('.chat-box').val("");
+    }
+
 }
 function checkKeyCode() {
-    
+    if (event.keyCode == 13) {
+        sendMessage();
+    }
+}
+
+function addMessageToView(username, message) {
+    $('#chat-view').append('<div class="message"><p>' + username + ': ' + message + '</p></div>');
 }
 
 $(function(){
-
 });
+console.log(username);
