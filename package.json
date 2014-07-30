@@ -1,0 +1,17 @@
+{
+    "name": "OnlineChat",
+    "description": "An online chat",
+    "version": "0.0.0",
+    "dependencies": {
+        "express": "*",
+        "socket.io": "*",
+        "mongodb": "*",
+        "mongoose": "*",
+        "body-parser": "*",
+        "bcrypt": "*",
+        "passport": "*",
+        "passport-local": "*",
+        "cookie-parser": "*",
+        "express-session": "*"
+    }
+}
