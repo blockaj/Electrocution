@@ -78,6 +78,12 @@ module.exports = function (app, user_reg) {
         console.log(user);
       });
     }
+    if (post.username != USERNAME) {
+      User.findOne({username: USERNAME}, function(err, user){
+        user.username = post.username;
+        user.save();
+    });
+    }
     if (post.register == 'on') {
       user_reg = true;
     }
