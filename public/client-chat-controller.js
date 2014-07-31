@@ -13,8 +13,8 @@ socket.on('broadcast', function(message){
 function sendMessage() {
     var messageContent = $('.chat-box').val();
     if (messageContent == 'server: settings') {
-        $.post('/go-to-server-settings', function(handler){
-
+        $.get('/server-settings', 'working', function(err){
+          if (err) { console.log(err); }
         });
     }
     else{
@@ -30,6 +30,7 @@ function checkKeyCode() {
         sendMessage();
     }
 }
+
 
 function addMessageToView(username, message) {
     $('#chat-view').append('<div class="message"><p>' + username + ': ' + message + '</p></div>');

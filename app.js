@@ -7,8 +7,9 @@ var LocalStrategy = require('passport-local').Strategy;
 var User = require('./models/user');
 var Message = require('./models/message');
 var nunjucks = require('nunjucks');
+var routes = require('./router');
 var USERNAME;
-
+var USER_REG = false;
 //Connect to a specific db
 mongoose.connect('mongodb://localhost/SpecialChat');
 
@@ -37,7 +38,7 @@ nunjucks.configure('views', {
 
 //Passport setup
 passport.serializeUser(function(user, done){
-  done(null, user.id);
+  return done(null, user.id);
 });
 passport.deserializeUser(function(id, done){
   User.findById(id, function(err, user){
@@ -56,53 +57,15 @@ passport.use(new LocalStrategy(
             } else {
             }
         });
-        return done(null, user);
       });
     }
 ));
 
-
-app.get('/', function(req, res){
-  return res.render('index.html');
-});
-
-app.get('/chat', function(req, res){
-  req.session.username = USERNAME;
-  console.log(req.session);
-  return res.render('chat.html', {
-    username: req.session.username
-  });
-});
-
-app.post('/attempt_login', function(req, res, next){
-  USERNAME = req.body.username;
-  passport.authenticate('local', function(err, user, info){
-    if (err) { return next(err); }
-    if (!user) { return res.redirect('/'); }
-    req.logIn(user, function(err){
-      if (err) { return next(err); }
-      return res.redirect('/chat');
-    });
-  })(req, res, next);
-});
-
-app.get('/server-settings', function(req, res){
-  return res.render('server-settings.html');
-  console.log('redirecting...');
-});
-
-app.post('/go-to-server-settings', function(req, res){
-  console.log('hey');
-  return res.redirect('/server-settings');
-  console.log('about to redirect');
-});
-
-
-
-
+routes(app, USER_REG);
 var io = require('socket.io').listen(app.listen(3000));
 
 io.on('connection', function(socket){
+  USERNAME = routes.getUsername();
   console.log('Username: ' + USERNAME);
   socket.emit('undist', {'username': USERNAME});
   socket.on('userMessage', function(data){
@@ -120,8 +83,15 @@ if (process.argv[2] == 'reset'){
   });
   var adminUser = new User({username: 'admin', password: 'password'});
   adminUser.save(function (err) {
+    console.log(adminUser);
     console.log("New user 'admin' created.");
   });
+  if (adminUser){
+    console.log(adminUser);
+    process.exit();
+  }
 }
+
+
 
 console.log('Server ON. http://127.0.0.1:3000');

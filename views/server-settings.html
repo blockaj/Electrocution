@@ -4,5 +4,14 @@
   </head>
   <body>
     <h1>Server Settings</h1>
+    <form name='server-settings' method='POST' action='update-settings'>
+      <h2>Allow other users to register:</h2>
+      On <input type='radio' name='register' value='on' {% if user_reg %}checked{% endif %}>
+      Off <input type='radio' name='register' value='off' {% if not user_reg %}checked{% endif %}> <br>
+      <h2>Change username & password: </h2>
+      Username: <input type='text' name='username' value='{{ username }}'> <br>
+      Password: <input type='password' name='password' value='password'>
+      <input type='submit' value='Update'>
+    </form>
   </body>
 </html>
