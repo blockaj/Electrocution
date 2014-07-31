@@ -1,15 +1,29 @@
-var express = require('express');
-var app = express();
-var mongoose = require('mongoose');
-var bcrypt = require('bcrypt');
-var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
-var User = require('./models/user');
-var Message = require('./models/message');
-var nunjucks = require('nunjucks');
-var routes = require('./router');
-var USERNAME;
-var USER_REG = false;
+/*
+
+
+name: Bugfree Archer
+description: A pretty sophisticated server using
+version: 0.0.0
+author: Aaron Block
+
+
+*/
+
+
+var express = require('express'),
+    app = express(),
+    mongoose = require('mongoose'),
+    bcrypt = require('bcrypt'),
+    passport = require('passport'),
+    LocalStrategy = require('passport-local').Strategy,
+    User = require('./models/user'),
+    Message = require('./models/message'),
+    nunjucks = require('nunjucks'),
+    routes = require('./router'),
+    ioHandler = require('./controllers/ioHandler'),
+    USERNAME,
+    USER_REG = false;
+    
 //Connect to a specific db
 mongoose.connect('mongodb://localhost/SpecialChat');
 
@@ -62,25 +76,12 @@ passport.use(new LocalStrategy(
 ));
 
 routes(app, USER_REG);
-var io = require('socket.io').listen(app.listen(3000));
 
-io.on('connection', function(socket){
-  USERNAME = routes.getUsername();
-  console.log('Username: ' + USERNAME);
-  socket.emit('undist', {'username': USERNAME});
-  socket.on('userMessage', function(data){
-    console.log(data.message);
-    io.sockets.emit('broadcast', {'message': data.message, 'username': data.username});
-  });
-});
+
 
 if (process.argv[2] == 'reset'){
-  User.remove({}, function(err){
-    console.log('All users have been removed.');
-  });
-  Message.remove({}, function(err){
-    console.log('All messages have been removed.');
-  });
+  console.log(mongoose.conneciton);
+
   var adminUser = new User({username: 'admin', password: 'password'});
   adminUser.save(function (err) {
     console.log(adminUser);
