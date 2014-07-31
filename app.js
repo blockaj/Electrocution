@@ -94,11 +94,9 @@ if (process.argv[2] == 'reset'){
   var adminUser = new User({username: config.adminUsername, password: config.adminPassword, permissions: 'admin'});
   adminUser.save(function (err) {
     console.log(adminUser);
-    console.log("New user 'admin' created.");
+    console.log("New user '"+ config.adminUsername +"' created.");
   });
-  if (adminUser){
-    console.log(adminUser);
-  }
+
 }
 
 
