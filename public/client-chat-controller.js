@@ -5,10 +5,16 @@ socket.on('undist', function(un){
 });
 
 socket.on('broadcast', function(message){
-    console.log(message.username + ': ' + message.message);
     addMessageToView(message.username, message.message);
     var chatView = document.getElementById('chat-view');
     chatView.scrollTop = chatView.scrollHeight;
+});
+socket.on('updateMessages', function(allMessages){
+  var messages = allMessages.messages;
+  for (i = 0; i < messages.length; i++) {
+    var message = messages[i];
+    addMessageToView(message.author, message.content);
+  }
 });
 function sendMessage() {
     var messageContent = $('.chat-box').val();
@@ -33,9 +39,8 @@ function checkKeyCode() {
 
 
 function addMessageToView(username, message) {
-    $('#chat-view').append('<div class="message"><p>' + username + ': ' + message + '</p></div>');
+    $('#chat-view').append('<div class="message"><p class="username">' + username + '</p>: ' + message + '</p></div>');
 }
 
 $(function(){
 });
-console.log(username);

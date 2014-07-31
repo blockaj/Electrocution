@@ -13,6 +13,7 @@
         "passport-local": "*",
         "cookie-parser": "*",
         "express-session": "*",
-        "nunjucks": "*"
+        "nunjucks": "*",
+        "moment": "*"
     }
 }
