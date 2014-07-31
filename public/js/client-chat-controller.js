@@ -6,8 +6,7 @@ socket.on('undist', function(un){
 
 socket.on('broadcast', function(message){
     addMessageToView(message.username, message.message);
-    var chatView = document.getElementById('chat-view');
-    chatView.scrollTop = chatView.scrollHeight;
+    scrollToBottom();
 });
 socket.on('updateMessages', function(allMessages){
   var messages = allMessages.messages;
@@ -39,8 +38,14 @@ function checkKeyCode() {
 
 
 function addMessageToView(username, message) {
-    $('#chat-view').append('<div class="message"><p class="username">' + username + '</p>: ' + message + '</p></div>');
+  $('#chat-view').append('<div class="message"><p class="username">' + username + '</p>: ' + message + '</p></div>');
 }
 
 $(function(){
+  scrollToBottom();
 });
+
+function scrollToBottom() {
+  var chatView = document.getElementById('chat-view');
+  chatView.scrollTop = chatView.scrollHeight;
+}
