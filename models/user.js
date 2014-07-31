@@ -5,7 +5,8 @@ var passport = require('passport'),
 
 var userSchema = new mongoose.Schema({
     username: String,
-    password: String
+    password: String,
+    permissions: String
 });
 
 userSchema.pre('save', function(next) {
