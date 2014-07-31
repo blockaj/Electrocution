@@ -1,5 +1,6 @@
 var passport = require('passport');
 var USERNAME;
+var User = require('../models/user');
 
 module.exports = function (app, user_reg) {
   //Root
@@ -53,6 +54,13 @@ module.exports = function (app, user_reg) {
     or not allowing user registration should be on.
   */
   app.get('/server-settings', ensureAuthenticated, function(req, res){
+    User.findOne({username: USERNAME}, function(err, user){
+      if (user.permissions != 'admin') {
+        return res.render('server-settings.html', {
+            permissions: 'normal'
+        });
+      }
+    });
     return res.render('server-settings.html', {
       user_reg: user_reg
     });
@@ -64,7 +72,11 @@ module.exports = function (app, user_reg) {
   app.post('/update-settings', function(req, res){
     var post = req.body;
     if (post.password != 'password') {
-
+      User.findOne({username: USERNAME}, function(err, user){
+        user.password = post.password;
+        user.save();
+        console.log(user);
+      });
     }
     if (post.register == 'on') {
       user_reg = true;
