@@ -23,7 +23,7 @@ var express = require('express'),
     ioHandler = require('./controllers/ioHandler'),
     USERNAME,
     USER_REG = false;
-    
+
 //Connect to a specific db
 mongoose.connect('mongodb://localhost/SpecialChat');
 
@@ -50,7 +50,7 @@ nunjucks.configure('views', {
   express: app
 });
 
-//Passport setup
+//Passport setup for sessions
 passport.serializeUser(function(user, done){
   return done(null, user.id);
 });
@@ -59,6 +59,8 @@ passport.deserializeUser(function(id, done){
       done(err, user);
   });
 });
+
+//Use a local strategy, no facebook, no google
 passport.use(new LocalStrategy(
   function(username, password, done){
     User.findOne({username: username}, function(err, user){
@@ -76,12 +78,18 @@ passport.use(new LocalStrategy(
 ));
 
 routes(app, USER_REG);
+ioHandler(app, 3000);
 
-
-
+//Remove all content from databases if 'reset' arg provided
+//Recreate basic 'admin' account
 if (process.argv[2] == 'reset'){
-  console.log(mongoose.conneciton);
-
+  User.remove({}, function(err){
+    if (err) { console.log(err); }
+      console.log(User);
+  });
+  Message.remove({}, function(err){
+    if (err) { console.log(err); }
+  });
   var adminUser = new User({username: 'admin', password: 'password'});
   adminUser.save(function (err) {
     console.log(adminUser);
@@ -89,7 +97,6 @@ if (process.argv[2] == 'reset'){
   });
   if (adminUser){
     console.log(adminUser);
-    process.exit();
   }
 }
 
