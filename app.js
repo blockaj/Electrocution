@@ -22,10 +22,11 @@ var express = require('express'),
     routes = require('./router'),
     ioHandler = require('./controllers/ioHandler'),
     USERNAME,
-    USER_REG = false;
+    USER_REG = false,
+    config = require('./config.json');
 
 //Connect to a specific db
-mongoose.connect('mongodb://localhost/SpecialChat');
+mongoose.connect('mongodb://localhost/' + config.db);
 
 //Express setup
 app.use(express.static('public'));
@@ -37,7 +38,7 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended: true}));
 
 var session = require('express-session');
-app.use(session({secret: 'dont tell nobody my secret',
+app.use(session({secret: config.sessionSecret,
                 resave: true,
                 saveUninitialized: true
                 }));
@@ -78,7 +79,7 @@ passport.use(new LocalStrategy(
 ));
 
 routes(app, USER_REG);
-ioHandler(app, 3000);
+ioHandler(app, config.port);
 
 //Remove all content from databases if 'reset' arg provided
 //Recreate basic 'admin' account
@@ -90,7 +91,7 @@ if (process.argv[2] == 'reset'){
   Message.remove({}, function(err){
     if (err) { console.log(err); }
   });
-  var adminUser = new User({username: 'admin', password: 'password'});
+  var adminUser = new User({username: config.adminUsername, password: config.adminPassword, permissions: 'admin'});
   adminUser.save(function (err) {
     console.log(adminUser);
     console.log("New user 'admin' created.");
@@ -102,4 +103,4 @@ if (process.argv[2] == 'reset'){
 
 
 
-console.log('Server ON. http://127.0.0.1:3000');
+console.log('Server ON. http://127.0.0.1:' + config.port);
