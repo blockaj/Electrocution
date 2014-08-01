@@ -27,6 +27,10 @@ module.exports = function (app, user_reg) {
       username: req.session.username
     });
   });
+  app.get('/logout', function(req, res){
+    req.logout();
+    res.redirect('/');
+  });
   /*
     Assign global var USERNAME the username
     which the user types in. Use the local strategy
@@ -88,10 +92,16 @@ module.exports = function (app, user_reg) {
       });
     }
     if (post.username != USERNAME) {
-      User.findOne({username: USERNAME}, function(err, user){
-        user.username = post.username;
-        user.save();
-    });
+      User.findOne({username: username}, function(err, user){
+        if (user){
+          console.log('Username taken');
+          return false;
+        } else {
+          user.username = post.username;
+          user.save();
+          return true;
+        }
+      });
     }
     if (post.register == 'on') {
       user_reg = true;
