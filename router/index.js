@@ -56,8 +56,11 @@ module.exports = function (app, user_reg) {
   app.get('/server-settings', ensureAuthenticated, function(req, res){
     User.findOne({username: USERNAME}, function(err, user){
       if (user.permissions == 'admin') {
-        return res.render('server-settings-admin.html', {
-          user_reg: user_reg
+        User.find(function(err, users){
+          return res.render('server-settings-admin.html', {
+            user_reg: user_reg,
+            users: users
+          });
         });
       }
       else {
@@ -96,6 +99,11 @@ module.exports = function (app, user_reg) {
     else if (post.register == 'off') {
       user_reg = false;
     }
+    User.find(function(err, users){
+      for (i = 0; i < users.length; i++) {
+        var user = users[i];
+      }
+    });
     return res.redirect('/server-settings');
   });
 }

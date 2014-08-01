@@ -11,6 +11,19 @@
         <h2>Change username & password: </h2>
         Username: <input type='text' name='username' value='{{ username }}'> <br>
         Password: <input type='password' name='password' value='password'>
+
+        <h2>Permissions</h2>
+        {% for user in users %}
+          {{ user.username }}:<select name='permissions-{{user.username}}'>
+            {% if user.permissions == 'admin'%}
+              <option value='admin'>Admin</option>
+              <option value='normal'>Normal</option>
+            {% else %}
+              <option value='normal'>Normal</option>
+              <option value='admin'>Admin</option>
+            {% endif %}
+          </select><br>
+        {% endfor %}
         <input type='submit' value='Update'>
     </form>
   </body>
