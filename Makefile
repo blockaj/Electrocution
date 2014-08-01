@@ -1,5 +1,5 @@
 all:
 
 install:
-  sudo npm install
-  node app reset
+\tsudo npm install
+\tnode app reset
