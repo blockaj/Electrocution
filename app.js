@@ -1,7 +1,7 @@
 /*
 
 
-name: Bugfree Archer
+name: Electrocution
 description: A pretty sophisticated server using
 version: 0.0.0
 author: Aaron Block
