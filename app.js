@@ -84,19 +84,17 @@ ioHandler(app, config.port);
 //Remove all content from databases if 'reset' arg provided
 //Recreate basic 'admin' account
 if (process.argv[2] == 'reset'){
+  var userInput = process.stdin;
   User.remove({}, function(err){
     if (err) { console.log(err); }
-      console.log(User);
   });
   Message.remove({}, function(err){
     if (err) { console.log(err); }
   });
   var adminUser = new User({username: config.adminUsername, password: config.adminPassword, permissions: 'admin'});
   adminUser.save(function (err) {
-    console.log(adminUser);
     console.log("New user '"+ config.adminUsername +"' created.");
   });
-
 }
 
 
