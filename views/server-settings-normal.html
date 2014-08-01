@@ -1,0 +1,14 @@
+<html>
+  <head>
+    <title>Server Settings</title>
+  </head>
+  <body>
+    <h1>Server Settings</h1>
+    <form name='server-settings' method='POST' action='update-settings'>
+        <h2>Change username & password: </h2>
+        Username: <input type='text' name='username' value='{{ username }}'> <br>
+        Password: <input type='password' name='password' value='password'>
+        <input type='submit' value='Update'>
+    </form>
+  </body>
+</html>

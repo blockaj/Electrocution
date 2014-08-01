@@ -55,15 +55,16 @@ module.exports = function (app, user_reg) {
   */
   app.get('/server-settings', ensureAuthenticated, function(req, res){
     User.findOne({username: USERNAME}, function(err, user){
-      if (user.permissions != 'admin') {
-        return res.render('server-settings.html', {
-            permissions: 'normal'
+      if (user.permissions == 'admin') {
+        return res.render('server-settings-admin.html', {
+          user_reg: user_reg
         });
       }
+      else {
+        return res.render('server-settings-normal.html');
+      }
     });
-    return res.render('server-settings.html', {
-      user_reg: user_reg
-    });
+
     console.log('redirecting...');
   });
   app.get('/unauthorized', function(req, res){
@@ -71,6 +72,11 @@ module.exports = function (app, user_reg) {
   });
   app.post('/update-settings', function(req, res){
     var post = req.body;
+    /*
+      Check if user typed in different password than default value
+      look for the user with their username in the database and
+      change the password to what they specified
+    */
     if (post.password != 'password') {
       User.findOne({username: USERNAME}, function(err, user){
         user.password = post.password;
