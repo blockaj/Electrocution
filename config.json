@@ -1,7 +1,7 @@
 {
   "db": "SpecialChat",
   "port": "3000",
-  "adminUsername": "blockaj",
-  "adminPassword": "zx3zc3jk",
+  "adminUsername": "admin",
+  "adminPassword": "password",
   "sessionSecret": "dont tell nobody my secret"
 }
