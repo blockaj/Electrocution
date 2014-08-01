@@ -102,9 +102,20 @@ module.exports = function (app, user_reg) {
     User.find(function(err, users){
       for (i = 0; i < users.length; i++) {
         var user = users[i];
+        if (req.body[user.username] == 'admin') {
+          user.permissions = 'admin'
+          user.save(function(err){
+            if (err) { console.log(err); }
+          });
+        } else if (req.body[user.username] == 'normal') {
+          user.permissions = 'normal';
+          user.save(function(err) {
+            if (err) { console.log(err); }
+          });
+        }
       }
     });
-    return res.redirect('/server-settings');
+    return res.redirect('/chat');
   });
 }
 

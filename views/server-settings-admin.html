@@ -14,7 +14,7 @@
 
         <h2>Permissions</h2>
         {% for user in users %}
-          {{ user.username }}:<select name='permissions-{{user.username}}'>
+          {{ user.username }}:<select name='{{user.username}}'>
             {% if user.permissions == 'admin'%}
               <option value='admin'>Admin</option>
               <option value='normal'>Normal</option>
