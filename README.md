@@ -1,5 +1,5 @@
 #Electrocution
-Electrocution is a server built on node.js. As of now, the only functionality is an online chat but
+Because it uses *sockets*, get it! Electrocution is a server built on node.js. As of now, the only functionality is an online chat but
 who knows what's going to come next.
 ##Setup
 1. Download Electrocution: `git clone https://github.com/blockaj/Electrocution.git`
