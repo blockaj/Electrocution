@@ -4,7 +4,7 @@ who knows what's going to come next.
 ##Setup
 1. Download Bugfree Archer: `git clone https://github.com/blockaj/bugfree-archer.git`
 2. `cd` into the directory where you downloaded Bugfree Archer
-3. Configure the server in configure.json
+3. Configure the server in config.json
 
 		{
           "db": "name of database",
