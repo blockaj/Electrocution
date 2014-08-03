@@ -3,17 +3,29 @@
     <title>Home</title>
     <link rel='stylesheet' href='css/reset.css'>
     <link rel='stylesheet' href='css/login_view.css'>
-    <link href='http://fonts.googleapis.com/css?family=Oswald:400,700' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic' rel='stylesheet' type='text/css'>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src='js/login_view.js'></script>
   </head>
   <body>
-    <div id='login'>
-      <h1>Login</h1>
-      <form name='login' method='POST' action='/attempt_login'>
-        <input name='username' type='text' placeholder='username'> <br>
-        <input name='password' type='password' placeholder='password'> <br>
-        <input type='submit' value='Login'>
-      </form>
+    <div id='header'>
+      <h1>{{ name }}</h1>
+      <p class='desc'>{{ description }}</p>
+    </div>
+    <div class='main'>
+      <div class='login'>
+        <h2>Login</h2>
+        <form name='login' method='POST' action='/attempt_login'>
+          <input name='username' type='text' placeholder='username'> <br>
+          <input name='password' type='password' placeholder='password'> <br>
+          <input type='submit' value='Login'>
+          <p class='register'>OR REGISTER</p>
+        </form>
+
+      </div>
+
+
+
     </div>
   </body>
 </html>

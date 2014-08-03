@@ -4,12 +4,13 @@
     overflow-y: auto;
 }
 .message {
-  font-family: "Lucida Grande";
+  font-family: "Courier New";
   width: 100%;
   margin-bottom: 0.5%;
   font-size: 0.9em;
 }
 .username {
+  letter-spacing: 0.1em;
   display: inline-block;
   font-weight: 700;
 }

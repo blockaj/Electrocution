@@ -1,18 +1,24 @@
 var passport = require('passport');
 var USERNAME;
 var User = require('../models/user');
+var config = require('../config.json');
 
 module.exports = function (app, user_reg) {
+  var siteName = config.name || 'Electrocution';
+  var siteDescription = config.description || 'A fancy server using websockets.';
   //Root
   app.get('/', function(req, res){
-    return res.render('index.html');
+    return res.render('index.html', {
+      name: siteName,
+      description: siteDescription,
+      user_reg: user_reg
+    });
   });
   //Register page
   app.get('/register', function(req, res){
-  /*
-    Check that admin set 'user registration' setting
-    to on, otherwise, no registration allowed
-   */
+
+    //Check that admin set 'user registration' setting
+    //to on, otherwise, no registration allowed
     if (user_reg) {
       res.render('register.html');
     }
@@ -31,12 +37,11 @@ module.exports = function (app, user_reg) {
     req.logout();
     res.redirect('/');
   });
-  /*
-    Assign global var USERNAME the username
-    which the user types in. Use the local strategy
-    for authentication, redirecting to roots if it fails
-    and to chat if successful.
-  */
+
+  //Assign global var USERNAME the username
+  //which the user types in. Use the local strategy
+  //for authentication, redirecting to roots if it fails
+  //and to chat if successful.
   app.post('/attempt_login', function(req, res, next){
     USERNAME = req.body.username;
     passport.authenticate('local', function(err, user, info){
@@ -52,11 +57,10 @@ module.exports = function (app, user_reg) {
   //Registering an account? See controllers/register.js.
   app.post('/attempt_register', require('../controllers/register').post);
 
-  /*
-    Require authentication for this page also
-    and use the user_reg variable to determine whether
-    or not allowing user registration should be on.
-  */
+
+  //Require authentication for this page also
+  //and use the user_reg variable to determine whether
+  //or not allowing user registration should be on.
   app.get('/server-settings', ensureAuthenticated, function(req, res){
     User.findOne({username: USERNAME}, function(err, user){
       if (user.permissions == 'admin') {
@@ -79,11 +83,10 @@ module.exports = function (app, user_reg) {
   });
   app.post('/update-settings', function(req, res){
     var post = req.body;
-    /*
-      Check if user typed in different password than default value
-      look for the user with their username in the database and
-      change the password to what they specified
-    */
+
+    //Check if user typed in different password than default value
+    //look for the user with their username in the database and
+    //change the password to what they specified
     if (post.password != 'password') {
       User.findOne({username: USERNAME}, function(err, user){
         user.password = post.password;
@@ -91,24 +94,33 @@ module.exports = function (app, user_reg) {
         console.log(user);
       });
     }
+
+    //Check if the user changed the username field
     if (post.username != USERNAME) {
+      //If they did, find their username in the database
       User.findOne({username: username}, function(err, user){
+        //Make sure it doesn't already exist
         if (user){
           console.log('Username taken');
           return false;
         } else {
+          //And change it
           user.username = post.username;
           user.save();
           return true;
         }
       });
     }
+
+    //If the user allowed registration
     if (post.register == 'on') {
       user_reg = true;
     }
     else if (post.register == 'off') {
       user_reg = false;
     }
+
+    //Check out the permissions of all of the users
     User.find(function(err, users){
       for (i = 0; i < users.length; i++) {
         var user = users[i];
@@ -129,15 +141,15 @@ module.exports = function (app, user_reg) {
   });
 }
 
-/*
-  Use the passport isAuthenticated() to
-  see whether or not a user is logged in
-*/
+
+//Use the passport isAuthenticated() to
+//see whether or not a user is logged in
 function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) { return next(); }
   res.redirect('/unauthorized');
 }
 
+//Get the username from anywhere
 module.exports.getUsername = function() {
   console.log(USERNAME);
   return USERNAME;
