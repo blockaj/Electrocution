@@ -1,5 +1,6 @@
 var User = require('../models/user');
 
+//Save a new user to the database on registration
 module.exports.post = function(req, res) {
     var newUser = new User({
         username: req.body.username,
@@ -18,7 +19,7 @@ module.exports.post = function(req, res) {
                 } else {
                     res.redirect('/');
                 }
-            });
+      
         }
     });
 }
