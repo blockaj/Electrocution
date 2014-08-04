@@ -7,6 +7,8 @@ who knows what's going to come next.
 3. Configure the server in config.json
 
 		{
+					"name": "Name That Will Appear On Pages",
+					"description": "Description of your site",
           "db": "name of database",
           "port": "port to run server on",
           "adminUsername": "admin username",
