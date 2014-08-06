@@ -7,13 +7,13 @@ who knows what's going to come next.
 3. Configure the server in config.json
 
 		{
-					"name": "Name that will appear on pages",
-					"description": "Description of your site",
-          "db": "name of database",
-          "port": "port to run server on",
-          "adminUsername": "admin username",
-          "adminPassword": "admin password",
-          "sessionSecret": "session secret for security purposes"
-      	}
+				"name": "Name that will appear on pages",
+				"description": "Description of your site",
+        "db": "name of database",
+        "port": "port to run server on",
+        "adminUsername": "admin username",
+        "adminPassword": "admin password",
+        "sessionSecret": "session secret for security purposes"
+    }
 
 4. Run `make install` to download and install all of the node modules
