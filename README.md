@@ -6,6 +6,7 @@ who knows what's going to come next.
 2. `cd` into the directory where you downloaded Electrocution
 3. Configure the server in config.json
 
+
 	{
 		"name": "Name that will appear on pages",
 		"description": "Description of your site",
