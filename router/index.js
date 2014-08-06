@@ -8,7 +8,7 @@ module.exports = function (app, user_reg) {
   var siteDescription = config.description || 'A fancy server using websockets.';
   //Root
   app.get('/', function(req, res){
-    return res.render('index.html', {
+    return res.render('pages/index.html', {
       name: siteName,
       description: siteDescription,
       user_reg: user_reg
@@ -20,7 +20,7 @@ module.exports = function (app, user_reg) {
     //Check that admin set 'user registration' setting
     //to on, otherwise, no registration allowed
     if (user_reg) {
-      res.render('register.html');
+      res.render('pages/register.html');
     }
     else {
       res.redirect('/unauthorized');
@@ -29,7 +29,7 @@ module.exports = function (app, user_reg) {
   //Require authentication to get a hold of the chat page
   app.get('/chat', ensureAuthenticated, function(req, res){
     req.session.username = USERNAME;
-    return res.render('chat.html', {
+    return res.render('pages/chat.html', {
       username: req.session.username
     });
   });
@@ -65,21 +65,21 @@ module.exports = function (app, user_reg) {
     User.findOne({username: USERNAME}, function(err, user){
       if (user.permissions == 'admin') {
         User.find(function(err, users){
-          return res.render('server-settings-admin.html', {
+          return res.render('pages/server-settings-admin.html', {
             user_reg: user_reg,
             users: users
           });
         });
       }
       else {
-        return res.render('server-settings-normal.html');
+        return res.render('pages/server-settings-normal.html');
       }
     });
 
     console.log('redirecting...');
   });
   app.get('/unauthorized', function(req, res){
-    return res.render('unauthorized.html');
+    return res.render('pages/unauthorized.html');
   });
   app.post('/update-settings', function(req, res){
     var post = req.body;
@@ -98,7 +98,7 @@ module.exports = function (app, user_reg) {
     //Check if the user changed the username field
     if (post.username != USERNAME) {
       //If they did, find their username in the database
-      User.findOne({username: username}, function(err, user){
+      User.findOne({username: USERNAME}, function(err, user){
         //Make sure it doesn't already exist
         if (user){
           console.log('Username taken');

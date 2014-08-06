@@ -1,0 +1,30 @@
+{% block wholeHtml %}
+  <html>
+    <head>
+      <title>{{ siteTitle }}</title>
+      {% block css %}
+        <link rel='stylesheet' href='style.css' />
+        <link href='http://fonts.googleapis.com/css?family=Roboto+Slab:400,700' rel='stylesheet' type='text/css' />
+        <link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+      {% endblock %}
+      {% block js %}
+        <script src='socket.io/socket.io.js'></script>
+        <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
+        <script src='js/login_view.js'></script>
+        <script src='js/client-chat-controller.js'></script>
+      {% endblock %}
+    </head>
+    <body>
+      {% block header %}
+        <div id='base-top'>
+          <a href='/logout'>Logout</a>
+          <a href='/server-settings'>Settings</a>
+        </div>
+      {% endblock %}
+      {% block main %}
+      {% endblock %}
+      {% block footer %}
+      {% endblock %}
+    </body>
+  </html>
+{% endblock %}

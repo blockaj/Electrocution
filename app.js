@@ -16,40 +16,53 @@ var express = require('express'),
     bcrypt = require('bcrypt'),
     passport = require('passport'),
     LocalStrategy = require('passport-local').Strategy,
+    nunjucks = require('nunjucks'),
+    cookieParser = require('cookie-parser'),
+    bodyParser = require('body-parser'),
+    session = require('express-session'),
+    lessMiddleware = require('less-middleware'),
+    less = require('less'),
+    //Models used for storing information in the db
     User = require('./models/user'),
     Message = require('./models/message'),
-    nunjucks = require('nunjucks'),
+    //Routes addresses
     routes = require('./router'),
+    //Handles all websockets
     ioHandler = require('./controllers/ioHandler'),
+    //Username stuff
     USERNAME,
     USER_REG = false,
+    //Get configuration settings
     config = require('./config.json');
+
+
+
+
 
 //Connect to a specific db
 mongoose.connect('mongodb://localhost/' + config.db);
 
 //Express setup
-app.use(express.static('public'));
-
-var cookieParser = require('cookie-parser');
+app.use(express.static(__dirname + '/public'));
+app.use(lessMiddleware( __dirname + '/public/css',
+                      {
+                        dest: __dirname + '/public'
+                      }));
 app.use(cookieParser('dont tell nobody my secret'));
-
-var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended: true}));
-
-var session = require('express-session');
 app.use(session({secret: config.sessionSecret,
                 resave: true,
                 saveUninitialized: true
                 }));
-
 app.use(passport.initialize());
 app.use(passport.session());
-
 nunjucks.configure('views', {
   autoescape: true,
   express: app
 });
+
+
+
 
 //Passport setup for sessions
 passport.serializeUser(function(user, done){
@@ -60,6 +73,7 @@ passport.deserializeUser(function(id, done){
       done(err, user);
   });
 });
+
 
 //Use a local strategy, no facebook, no google
 passport.use(new LocalStrategy(
@@ -80,6 +94,8 @@ passport.use(new LocalStrategy(
 
 routes(app, USER_REG);
 ioHandler(app, config.port);
+
+
 
 //Remove all content from databases if 'reset' arg provided
 //Recreate basic 'admin' account

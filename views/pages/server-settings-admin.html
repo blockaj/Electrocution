@@ -1,0 +1,26 @@
+{% extends 'global/base.html' %}
+{% block main %}
+  <h1 class='settings'>Server Settings</h1>
+  <form name='server-settings' method='POST' action='update-settings'>
+      <h2 class='settings'>Allow other users to register:</h2>
+      On <input type='radio' name='register' value='on' {% if user_reg %}checked{% endif %}>
+      Off <input type='radio' name='register' value='off' {% if not user_reg %}checked{% endif %}> <br>
+      <h2 class='settings'>Change username & password: </h2>
+      Username: <input type='text' name='username' value='{{ username }}'> <br>
+      Password: <input type='password' name='password' value='password'>
+
+      <h2 class='settings'>Permissions</h2>
+      {% for user in users %}
+        {{ user.username }}:<select name='{{user.username}}'>
+          {% if user.permissions == 'admin'%}
+            <option value='admin'>Admin</option>
+            <option value='normal'>Normal</option>
+          {% else %}
+            <option value='normal'>Normal</option>
+            <option value='admin'>Admin</option>
+          {% endif %}
+        </select><br>
+      {% endfor %}
+      <input type='submit' value='Update'>
+  </form>
+{% endblock %}

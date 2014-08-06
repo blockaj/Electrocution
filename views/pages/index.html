@@ -1,17 +1,11 @@
-<html>
-  <head>
-    <title>Home</title>
-    <link rel='stylesheet' href='css/reset.css'>
-    <link rel='stylesheet' href='css/login_view.css'>
-    <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic' rel='stylesheet' type='text/css'>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src='js/login_view.js'></script>
-  </head>
-  <body>
+{% extends 'global/base.html' %}
+  {% block header %}
     <div id='header'>
       <h1>{{ name }}</h1>
       <p class='desc'>{{ description }}</p>
     </div>
+  {% endblock %}
+  {% block main %}
     <div class='main'>
       <div class='login'>
         <h2>Login</h2>
@@ -19,13 +13,10 @@
           <input name='username' type='text' placeholder='username'> <br>
           <input name='password' type='password' placeholder='password'> <br>
           <input type='submit' value='Login'>
-          <p class='register'>OR REGISTER</p>
+          <a href='/register'><p class='register'>OR REGISTER</p></a>
         </form>
-
       </div>
-
-
-
     </div>
+  {% endblock %}
   </body>
 </html>
